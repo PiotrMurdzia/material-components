@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/navigation/menu.schema.json",
+  "title": "SideMenu Input",
+  "type": "object",
+  "properties": {
+    "availableItems": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/MenuItemInput" },
+      "uniqueItems": true
+    }
+  },
+  "required": ["availableItems"],
+  "$defs": {
+    "MenuItemInput": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "name": { "type": "string", "minLength": 1 },
+        "labelKey": { "type": "string", "minLength": 1 },
+        "path": { "type": "string", "pattern": "^/" },
+        "icon": { "type": "string" },
+        "allowedRoles": {
+          "type": "array",
+          "items": { "type": "string" },
+          "uniqueItems": true
+        },
+        "children": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "id": { "type": "string", "minLength": 1 },
+              "name": { "type": "string", "minLength": 1 },
+              "labelKey": { "type": "string", "minLength": 1 },
+              "path": { "type": "string", "pattern": "^/" },
+              "icon": { "type": "string" },
+              "allowedRoles": {
+                "type": "array",
+                "items": { "type": "string" },
+                "uniqueItems": true
+              }
+            },
+            "required": ["id", "name"],
+            "allOf": [
+              { "not": { "required": ["children"] } }
+            ]
+          },
+          "uniqueItems": true
+        }
+      },
+      "required": ["id", "name"],
+      "allOf": [
+        {
+          "if": { "required": ["children"] },
+          "then": { "not": { "required": ["path"] } },
+          "else": { "required": ["path"] }
+        }
+      ]
+    }
+  }
+}
+
+

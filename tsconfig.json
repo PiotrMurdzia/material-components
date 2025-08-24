@@ -18,7 +18,13 @@
       "@/*": ["src/*"]
     }
   },
-  "include": ["src", "tests"]
+  "include": ["src"]
+  ,
+  "exclude": [
+    "src/**/*.stories.*",
+    "src/**/*.test.*",
+    "tests/**"
+  ]
 }
 
 
